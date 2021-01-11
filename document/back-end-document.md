@@ -12,7 +12,7 @@
 
 - 后端代码架构
 
-  ![image-20210111212415590](D:\arts\gopath\src\pku-class\market\document\img\b代码架构.png)
+  ![image-20210111212415590](./img/b代码架构.png)
 
   整个后端使用了gin架构，可以分为消费者和生产者两种模式运行。
 
@@ -36,23 +36,23 @@
 
   下面是main.go的代码：
 
-  ![image-20210111212855884](D:\arts\gopath\src\pku-class\market\document\img\main.go.png)
+  ![image-20210111212855884](./img/main.go.png)
 
   可以看到程序可以分为消费者和生产者，这一概念对应于消息队列。生产者模式下，程序会监听8081端口，然后接受前端发来的请求进行处理和返回，如果是秒杀请求就将消息放入消息队列中等待消费者模式下的程序处理。消费者模式下则不断从消息队列中取出秒杀订单来处理。
 
 - router(包含认证)
 
-  ![image-20210111213240851](D:\arts\gopath\src\pku-class\market\document\img\cors.png)
+  ![image-20210111213240851](./img/cors.png)
 
-  ![image-20210111213310740](D:\arts\gopath\src\pku-class\market\document\img\JWT.png)
+  ![image-20210111213310740](./img/JWT.png)
 
-  ![image-20210111213530209](D:\arts\gopath\src\pku-class\market\document\img\b-router.png)
+  ![image-20210111213530209](./img/b-router.png)
 
   router主要是配置各种路由，将相应的请求交给相应的handler。另外router使用了两个中间件，一个负责处理跨域请求，主要是因为我们是前后端分离的，前端和后端通信涉及跨域。另一个负责JWT的token解析，身份认证，放行login请求，其余请求则必须在header中包含token，解密后可以得到用户id、用户名和用户角色三个信息，并将这三个信息交给handler(如果handler中涉及到需要用户身份信息的业务，则只能使用jwt解析出的身份信息)。并且token解析还需要输出安全日志。
 
 - handler
 
-  ![image-20210111214049643](D:\arts\gopath\src\pku-class\market\document\img\handler.png)
+  ![image-20210111214049643](./img/handler.png)
 
   handler中主要是各种业务处理，每个目录下都有一个server.go，该文件中主要封装了所有和数据库相关的操作。如果是查询数据库则直接查询，如果涉及增删改则需要使用事务。简单业务都可以直接和数据库交互处理，如果是秒杀请求则将请求放入消息队列。如果是登录请求则要生成新的token返回给前端。
 
@@ -62,7 +62,7 @@
 
 - data
 
-  ![image-20210111214822371](D:\arts\gopath\src\pku-class\market\document\img\data.png)
+  ![image-20210111214822371](./img/data.png)
 
   data中主要是一些数据结构的定义，在gin框架下与前端的通信中，以及与数据库的交互中都使用了这些数据结构。另外data中还有一些函数用于封装这些结构体为前后端通信接口中的json格式。
 
@@ -76,30 +76,30 @@
 
   - token解析的日志
 
-    ![image-20210111220146515](D:\arts\gopath\src\pku-class\market\document\img\token解析.png)
+    ![image-20210111220146515](./img/token解析.png)
 
   - 商品修改日志
 
-    ![image-20210111220403242](D:\arts\gopath\src\pku-class\market\document\img\commodity修改.png)
+    ![image-20210111220403242](./img/commodity修改.png)
 
 ## 数据库
 
 - 表
 
-  ![image-20210111215513435](D:\arts\gopath\src\pku-class\market\document\img\表.png)
+  ![image-20210111215513435](./img/表.png)
 
 - commodities
 
-  ![image-20210111215557085](D:\arts\gopath\src\pku-class\market\document\img\commodity.png)
+  ![image-20210111215557085](./img/commodity.png)
 
 - menus
 
-  ![image-20210111215633378](D:\arts\gopath\src\pku-class\market\document\img\menus.png)
+  ![image-20210111215633378](./img/menus.png)
 
 - orders
 
-  ![image-20210111215707418](D:\arts\gopath\src\pku-class\market\document\img\orders.png)
+  ![image-20210111215707418](./img/orders.png)
 
 - users
 
-  ![image-20210111215801748](D:\arts\gopath\src\pku-class\market\document\img\users.png)
+  ![image-20210111215801748](./img/users.png)
